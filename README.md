@@ -20,16 +20,5 @@ PYME/
 └── img/                # Imágenes (placeholders SVG, reemplazables)
 ```
 
-## Requisitos cumplidos (pauta)
-- Página principal con nombre de la PYME y listado de categorías con imagen e hipervínculo.
-- 4 categorías, 3 juegos por categoría (12 fichas) con imagen, nombre, descripción,
-  precio y estado de descuento.
-- Navegación entre páginas y retorno al inicio en todas las pantallas.
-- CSS avanzado: **variables CSS** (`:root`), **5 animaciones** (`@keyframes`) y
-  **media queries** para responsividad.
-
-## Cómo ver el sitio
-Abre `index.html` en cualquier navegador (doble clic).
-
-## Pendiente / mejoras
-- Reemplazar los placeholders SVG de `img/` por imágenes reales de cada juego.
+## Cómo ver el sitio (Recomendación)
+Instala la extension live server en tu vs code y abre el index.html con ella, asi se renderizara la pagina correctamente

@@ -10,3 +10,8 @@ desktop.ini
 # Temporales
 *.tmp
 *.log
+
+#Claude
+.claude/
+.MD
+

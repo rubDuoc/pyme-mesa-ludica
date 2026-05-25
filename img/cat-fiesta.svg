@@ -1,11 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#9333ea"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6b21a8"/>
+      <stop offset="0.55" stop-color="#c026d3"/>
       <stop offset="1" stop-color="#ec4899"/>
     </linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.30"/>
+    </filter>
   </defs>
-  <rect width="800" height="300" fill="url(#g)"/>
-  <text x="50%" y="42%" font-size="120" text-anchor="middle" dominant-baseline="middle">🎉</text>
-  <text x="50%" y="78%" font-family="Segoe UI, Arial, sans-serif" font-size="38" font-weight="bold" fill="#ffffff" text-anchor="middle">Fiesta</text>
+  <rect width="1200" height="500" fill="url(#bg)"/>
+  <!-- globos -->
+  <g filter="url(#sh)">
+    <path d="M160 250 Q150 270 160 285" stroke="#fde68a" stroke-width="3" fill="none"/>
+    <ellipse cx="160" cy="180" rx="58" ry="70" fill="#fbbf24"/>
+    <polygon points="155,248 165,248 160,260" fill="#fbbf24"/>
+    <path d="M280 270 Q272 292 282 308" stroke="#a7f3d0" stroke-width="3" fill="none"/>
+    <ellipse cx="280" cy="200" rx="58" ry="70" fill="#34d399"/>
+    <polygon points="275,268 285,268 280,280" fill="#34d399"/>
+    <path d="M1010 250 Q1002 272 1012 288" stroke="#bae6fd" stroke-width="3" fill="none"/>
+    <ellipse cx="1010" cy="180" rx="58" ry="70" fill="#38bdf8"/>
+    <polygon points="1005,248 1015,248 1010,260" fill="#38bdf8"/>
+  </g>
+  <!-- confeti -->
+  <g opacity="0.95">
+    <rect x="420" y="70" width="22" height="10" rx="3" fill="#fbbf24" transform="rotate(35 431 75)"/>
+    <rect x="520" y="110" width="22" height="10" rx="3" fill="#34d399" transform="rotate(-25 531 115)"/>
+    <rect x="700" y="60" width="22" height="10" rx="3" fill="#60a5fa" transform="rotate(50 711 65)"/>
+    <rect x="820" y="120" width="22" height="10" rx="3" fill="#f87171" transform="rotate(-40 831 125)"/>
+    <rect x="640" y="150" width="22" height="10" rx="3" fill="#fde68a" transform="rotate(20 651 155)"/>
+    <circle cx="480" cy="160" r="8" fill="#a7f3d0"/>
+    <circle cx="760" cy="150" r="8" fill="#fbbf24"/>
+    <circle cx="900" cy="80" r="8" fill="#f9a8d4"/>
+    <polygon points="600,40 608,62 631,62 612,76 619,98 600,84 581,98 588,76 569,62 592,62" fill="#fde68a"/>
+  </g>
+  <text x="600" y="430" font-family="Segoe UI, Arial, sans-serif" font-size="82" font-weight="800" fill="#ffffff" text-anchor="middle" filter="url(#sh)" letter-spacing="3">FIESTA</text>
 </svg>
