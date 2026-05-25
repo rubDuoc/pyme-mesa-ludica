@@ -1,0 +1,410 @@
+/* ============================================================
+   Mesa Lúdica - Hoja de estilos principal
+   DSY2202 - Desarrollo Full Stack II - Experiencia 1, Semana 1
+   ============================================================ */
+
+/* ----- 1. VARIABLES CSS (variables personalizadas) ----- */
+:root {
+  /* Paleta de marca */
+  --color-primario: #1e3a8a;
+  --color-secundario: #0ea5e9;
+  --color-acento: #f59e0b;
+  --color-exito: #16a34a;
+  --color-peligro: #dc2626;
+
+  /* Neutros */
+  --color-fondo: #f4f6fb;
+  --color-superficie: #ffffff;
+  --color-texto: #1f2937;
+  --color-texto-suave: #6b7280;
+
+  /* Colores por categoría */
+  --cat-estrategia: #1e3a8a;
+  --cat-familiares: #15803d;
+  --cat-fiesta: #9333ea;
+  --cat-cartas: #b45309;
+
+  /* Tipografía y espaciado */
+  --fuente-base: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --radio: 14px;
+  --sombra: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --sombra-fuerte: 0 14px 36px rgba(15, 23, 42, 0.22);
+  --transicion: 0.3s ease;
+  --ancho-max: 1100px;
+}
+
+/* ----- 2. RESET BÁSICO ----- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Box Model: el padding y border se incluyen en el ancho */
+}
+
+html {
+  scroll-behavior: smooth; /* desplazamiento suave */
+}
+
+body {
+  font-family: var(--fuente-base);
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ----- 3. ANIMACIONES (@keyframes) ----- */
+
+/* (1) Aparición suave de elementos */
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* (2) Deslizar el encabezado desde arriba */
+@keyframes bajarHeader {
+  from { transform: translateY(-100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* (3) Latido para resaltar la etiqueta de descuento */
+@keyframes latir {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.12); }
+}
+
+/* (4) Flotación para los iconos/imágenes destacadas */
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+/* (5) Brillo que recorre el hero */
+@keyframes brillo {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ----- 4. CONTENEDOR Y UTILIDADES ----- */
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-max);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.seccion {
+  padding: 50px 0;
+}
+
+.titulo-seccion {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.subtitulo-seccion {
+  text-align: center;
+  color: var(--color-texto-suave);
+  margin-bottom: 40px;
+}
+
+/* ----- 5. ENCABEZADO Y NAVEGACIÓN ----- */
+.cabecera {
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  color: #fff;
+  box-shadow: var(--sombra);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  animation: bajarHeader 0.6s ease both;
+}
+
+.barra-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px 20px;
+  max-width: var(--ancho-max);
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.logo span {
+  font-size: 1.8rem;
+  animation: flotar 3s ease-in-out infinite;
+}
+
+.menu {
+  display: flex;
+  list-style: none;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.menu a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: background var(--transicion), transform var(--transicion);
+}
+
+/* pseudo-clase :hover */
+.menu a:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+}
+
+/* ----- 6. HERO (portada de inicio) ----- */
+.hero {
+  text-align: center;
+  padding: 70px 20px;
+  background: linear-gradient(120deg, #e0f2fe, #ede9fe, #fef3c7);
+  background-size: 200% auto;
+  animation: brillo 8s linear infinite;
+}
+
+.hero h1 {
+  font-size: 2.6rem;
+  margin-bottom: 12px;
+  color: var(--color-primario);
+}
+
+.hero p {
+  font-size: 1.15rem;
+  color: var(--color-texto-suave);
+  max-width: 620px;
+  margin: 0 auto 24px;
+}
+
+.boton {
+  display: inline-block;
+  background: var(--color-acento);
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  box-shadow: var(--sombra);
+  transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+.boton:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: var(--sombra-fuerte);
+}
+
+/* ----- 7. GRID DE CATEGORÍAS (página principal) ----- */
+.grid-categorias {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.tarjeta-categoria {
+  background: var(--color-superficie);
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  transition: transform var(--transicion), box-shadow var(--transicion);
+  animation: aparecer 0.6s ease both;
+}
+
+.tarjeta-categoria:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--sombra-fuerte);
+}
+
+.tarjeta-categoria img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+.tarjeta-categoria .cuerpo {
+  padding: 18px;
+  text-align: center;
+}
+
+.tarjeta-categoria h3 {
+  font-size: 1.3rem;
+  margin-bottom: 6px;
+}
+
+.tarjeta-categoria p {
+  color: var(--color-texto-suave);
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
+
+/* ----- 8. CABECERA DE CATEGORÍA (banner interior) ----- */
+.banner-categoria {
+  position: relative;
+  color: #fff;
+  text-align: center;
+  padding: 60px 20px;
+  background-size: cover;
+  background-position: center;
+}
+
+.banner-categoria::after {
+  /* pseudo-elemento que oscurece la imagen para legibilidad */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.banner-categoria h1,
+.banner-categoria p {
+  position: relative;
+  z-index: 1;
+}
+
+.banner-categoria h1 {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+
+/* ----- 9. GRID DE JUEGOS (fichas) ----- */
+.grid-juegos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+}
+
+.ficha {
+  position: relative;
+  background: var(--color-superficie);
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transicion), box-shadow var(--transicion);
+  animation: aparecer 0.6s ease both;
+}
+
+.ficha:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--sombra-fuerte);
+}
+
+.ficha img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.ficha .cuerpo {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.ficha h3 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.ficha .descripcion {
+  color: var(--color-texto-suave);
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.ficha .pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Precios */
+.precio {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-primario);
+}
+
+.precio-antiguo {
+  font-size: 0.95rem;
+  color: var(--color-texto-suave);
+  text-decoration: line-through;
+  margin-right: 6px;
+}
+
+/* Etiqueta de descuento */
+.etiqueta-descuento {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: var(--color-peligro);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  box-shadow: var(--sombra);
+  animation: latir 1.4s ease-in-out infinite;
+}
+
+.etiqueta-sin-descuento {
+  font-size: 0.8rem;
+  color: var(--color-texto-suave);
+  font-style: italic;
+}
+
+/* ----- 10. PIE DE PÁGINA ----- */
+.pie-pagina {
+  background: var(--color-texto);
+  color: #e5e7eb;
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 40px;
+}
+
+.pie-pagina a {
+  color: var(--color-acento);
+  font-weight: 600;
+}
+
+/* ----- 11. DISEÑO RESPONSIVO (media queries) ----- */
+
+/* Tablets */
+@media screen and (max-width: 768px) {
+  .hero h1 { font-size: 2rem; }
+  .titulo-seccion { font-size: 1.6rem; }
+  .barra-nav { justify-content: center; }
+}
+
+/* Teléfonos */
+@media screen and (max-width: 480px) {
+  .grid-categorias,
+  .grid-juegos {
+    grid-template-columns: 1fr; /* una sola columna */
+  }
+  .menu { width: 100%; justify-content: center; }
+  .hero { padding: 50px 16px; }
+  .hero h1 { font-size: 1.7rem; }
+}
