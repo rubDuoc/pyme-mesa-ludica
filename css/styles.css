@@ -1,6 +1,6 @@
 /* ============================================================
    Mesa Lúdica - Hoja de estilos principal
-   DSY2202 - Desarrollo Full Stack II - Experiencia 1, Semana 1
+   DSY2202 - Desarrollo Full Stack II - Experiencia 1, Semana 2
    ============================================================ */
 
 /* ----- 1. VARIABLES CSS (variables personalizadas) ----- */
@@ -31,17 +31,15 @@
   --sombra-fuerte: 0 14px 36px rgba(15, 23, 42, 0.22);
   --transicion: 0.3s ease;
   --ancho-max: 1100px;
+
+  /* Personalización de Bootstrap a nuestra paleta */
+  --bs-primary: var(--color-primario);
+  --bs-primary-rgb: 30, 58, 138;
 }
 
 /* ----- 2. RESET BÁSICO ----- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box; /* Box Model: el padding y border se incluyen en el ancho */
-}
-
 html {
-  scroll-behavior: smooth; /* desplazamiento suave */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -62,45 +60,32 @@ a {
 }
 
 /* ----- 3. ANIMACIONES (@keyframes) ----- */
-
-/* (1) Aparición suave de elementos */
 @keyframes aparecer {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* (2) Deslizar el encabezado desde arriba */
 @keyframes bajarHeader {
   from { transform: translateY(-100%); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
 
-/* (3) Latido para resaltar la etiqueta de descuento */
 @keyframes latir {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.12); }
 }
 
-/* (4) Flotación para los iconos/imágenes destacadas */
 @keyframes flotar {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-10px); }
 }
 
-/* (5) Brillo que recorre el hero */
 @keyframes brillo {
   0%   { background-position: -200% center; }
   100% { background-position: 200% center; }
 }
 
-/* ----- 4. CONTENEDOR Y UTILIDADES ----- */
-.contenedor {
-  width: 100%;
-  max-width: var(--ancho-max);
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
+/* ----- 4. UTILIDADES ----- */
 .seccion {
   padding: 50px 0;
 }
@@ -117,60 +102,85 @@ a {
   margin-bottom: 40px;
 }
 
-/* ----- 5. ENCABEZADO Y NAVEGACIÓN ----- */
+/* ----- 5. ENCABEZADO Y NAVEGACIÓN (Bootstrap navbar + estilos propios) ----- */
 .cabecera {
   background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
   color: #fff;
   box-shadow: var(--sombra);
-  position: sticky;
-  top: 0;
-  z-index: 100;
   animation: bajarHeader 0.6s ease both;
+  transition: padding var(--transicion), box-shadow var(--transicion);
 }
 
-.barra-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 16px 20px;
-  max-width: var(--ancho-max);
-  margin: 0 auto;
+/* clase aplicada con JS cuando el usuario hace scroll */
+.cabecera.cabecera-scrolled .navbar {
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+.cabecera.cabecera-scrolled {
+  box-shadow: var(--sombra-fuerte);
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.cabecera .navbar {
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
+}
+
+.cabecera .navbar-brand.logo {
+  color: #fff;
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.logo span {
+.cabecera .navbar-brand.logo span {
   font-size: 1.8rem;
+  display: inline-block;
   animation: flotar 3s ease-in-out infinite;
 }
 
-.menu {
-  display: flex;
-  list-style: none;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.menu a {
+.cabecera .navbar-nav .nav-link {
+  color: #ffffff;
+  font-weight: 600;
   padding: 8px 14px;
   border-radius: 999px;
-  font-weight: 600;
   transition: background var(--transicion), transform var(--transicion);
 }
 
-/* pseudo-clase :hover */
-.menu a:hover {
+.cabecera .navbar-nav .nav-link:hover,
+.cabecera .navbar-nav .nav-link:focus {
   background: rgba(255, 255, 255, 0.22);
   transform: translateY(-2px);
+  color: #fff;
+}
+
+.cabecera .navbar-nav .nav-link.active {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* botón "Registrarse" destacado en la navbar */
+.cabecera .nav-link.nav-cta {
+  background: var(--color-acento);
+  color: #fff;
+}
+
+.cabecera .nav-link.nav-cta:hover,
+.cabecera .nav-link.nav-cta:focus {
+  background: #e08e07;
+  color: #fff;
+}
+
+/* botón hamburguesa: ícono blanco */
+.cabecera .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+.cabecera .navbar-toggler:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+.cabecera .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255,255,255,0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
 /* ----- 6. HERO (portada de inicio) ----- */
@@ -200,24 +210,28 @@ a {
   background: var(--color-acento);
   color: #fff;
   padding: 12px 28px;
+  border: none;
   border-radius: 999px;
   font-weight: 700;
   box-shadow: var(--sombra);
-  transition: transform var(--transicion), box-shadow var(--transicion);
+  transition: transform var(--transicion), box-shadow var(--transicion), background var(--transicion);
+  cursor: pointer;
 }
 
 .boton:hover {
   transform: translateY(-3px) scale(1.03);
   box-shadow: var(--sombra-fuerte);
+  color: #fff;
 }
 
-/* ----- 7. GRID DE CATEGORÍAS (página principal) ----- */
-.grid-categorias {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
+.boton-secundario {
+  background: var(--color-texto-suave);
+}
+.boton-secundario:hover {
+  background: #4b5563;
 }
 
+/* ----- 7. TARJETAS DE CATEGORÍA (index) ----- */
 .tarjeta-categoria {
   background: var(--color-superficie);
   border-radius: var(--radio);
@@ -225,6 +239,8 @@ a {
   box-shadow: var(--sombra);
   transition: transform var(--transicion), box-shadow var(--transicion);
   animation: aparecer 0.6s ease both;
+  display: flex;
+  flex-direction: column;
 }
 
 .tarjeta-categoria:hover {
@@ -241,6 +257,9 @@ a {
 .tarjeta-categoria .cuerpo {
   padding: 18px;
   text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .tarjeta-categoria h3 {
@@ -252,9 +271,10 @@ a {
   color: var(--color-texto-suave);
   font-size: 0.95rem;
   margin-bottom: 14px;
+  flex-grow: 1;
 }
 
-/* ----- 8. CABECERA DE CATEGORÍA (banner interior) ----- */
+/* ----- 8. BANNER DE CATEGORÍA (página interior) ----- */
 .banner-categoria {
   position: relative;
   color: #fff;
@@ -265,7 +285,6 @@ a {
 }
 
 .banner-categoria::after {
-  /* pseudo-elemento que oscurece la imagen para legibilidad */
   content: "";
   position: absolute;
   inset: 0;
@@ -283,13 +302,7 @@ a {
   margin-bottom: 8px;
 }
 
-/* ----- 9. GRID DE JUEGOS (fichas) ----- */
-.grid-juegos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 28px;
-}
-
+/* ----- 9. FICHAS DE JUEGOS ----- */
 .ficha {
   position: relative;
   background: var(--color-superficie);
@@ -367,6 +380,7 @@ a {
   border-radius: 999px;
   box-shadow: var(--sombra);
   animation: latir 1.4s ease-in-out infinite;
+  z-index: 2;
 }
 
 .etiqueta-sin-descuento {
@@ -375,7 +389,73 @@ a {
   font-style: italic;
 }
 
-/* ----- 10. PIE DE PÁGINA ----- */
+/* ----- 10. PÁGINA DE REGISTRO ----- */
+.banner-registro {
+  position: relative;
+  color: #fff;
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario), var(--color-acento));
+  background-size: 200% auto;
+  animation: brillo 10s linear infinite;
+}
+
+.banner-registro h1 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.banner-registro p {
+  position: relative;
+  z-index: 1;
+  opacity: 0.95;
+}
+
+.formulario-card {
+  background: var(--color-superficie);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 30px;
+  animation: aparecer 0.6s ease both;
+}
+
+.formulario-card .form-label {
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.formulario-card .form-control:focus {
+  border-color: var(--color-secundario);
+  box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.18);
+}
+
+/* ----- 10b. MODAL DE ÉXITO DEL REGISTRO ----- */
+.modal-header-exito {
+  background: linear-gradient(135deg, var(--color-exito), #34d399);
+  color: #fff;
+  border-bottom: none;
+}
+
+.modal-header-exito .modal-title {
+  font-weight: 700;
+}
+
+#modalExito .modal-content {
+  border-radius: var(--radio);
+  overflow: hidden;
+  border: none;
+  box-shadow: var(--sombra-fuerte);
+}
+
+#modalExito .modal-footer {
+  border-top: 1px solid #e5e7eb;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ----- 11. PIE DE PÁGINA ----- */
 .pie-pagina {
   background: var(--color-texto);
   color: #e5e7eb;
@@ -389,22 +469,50 @@ a {
   font-weight: 600;
 }
 
-/* ----- 11. DISEÑO RESPONSIVO (media queries) ----- */
+/* ----- 12. AJUSTES RESPONSIVOS ADICIONALES ----- */
+/* Bootstrap maneja la cuadrícula; estos retoques afinan tipografías y paddings. */
 
-/* Tablets */
+@media screen and (max-width: 991.98px) {
+  /* navbar colapsada (móvil/tablet) */
+  .cabecera .navbar-collapse {
+    width: 100%;
+  }
+  .cabecera .navbar-nav {
+    width: 100%;
+    margin-top: 12px;
+    gap: 6px;
+  }
+  .cabecera .navbar-nav .nav-item {
+    width: 100%;
+  }
+  .cabecera .navbar-nav .nav-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+    border-radius: 12px; /* pill completo se ve raro a ancho 100% */
+  }
+  /* evitar el salto en táctil: el hover/focus no debe desplazar */
+  .cabecera .navbar-nav .nav-link:hover,
+  .cabecera .navbar-nav .nav-link:focus {
+    transform: none;
+  }
+  /* separar visualmente el CTA del resto */
+  .cabecera .nav-item:has(> .nav-cta) {
+    margin-top: 6px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .hero h1 { font-size: 2rem; }
   .titulo-seccion { font-size: 1.6rem; }
-  .barra-nav { justify-content: center; }
+  .banner-categoria h1,
+  .banner-registro h1 { font-size: 1.8rem; }
+  .formulario-card { padding: 22px; }
 }
 
-/* Teléfonos */
 @media screen and (max-width: 480px) {
-  .grid-categorias,
-  .grid-juegos {
-    grid-template-columns: 1fr; /* una sola columna */
-  }
-  .menu { width: 100%; justify-content: center; }
   .hero { padding: 50px 16px; }
   .hero h1 { font-size: 1.7rem; }
+  .formulario-card { padding: 18px; }
+  .boton { padding: 10px 22px; }
 }
