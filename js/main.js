@@ -143,42 +143,43 @@
 
   // ============================================================
    // 4. BOTÓN "AGREGAR AL CARRITO" EN LAS FICHAS DE JUEGO
-   // Detecta cualquier elemento con data-agregar-carrito y conecta el click.
+   // Usa delegación: un único listener en document sirve para botones
+   // estáticos y para los renderizados dinámicamente (ver catalogo.js).
   // ============================================================
   function configurarAgregarCarrito() {
-    document.querySelectorAll('[data-agregar-carrito]').forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        if (!window.Auth || !window.Datos) return;
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-agregar-carrito]');
+      if (!btn) return;
+      e.preventDefault();
+      if (!window.Auth || !window.Datos) return;
 
-        var sesion = Auth.sesionActual();
-        if (!sesion) {
-          var actual = (location.pathname.split('/').pop() || '');
-          window.location.href = 'login.html?redirect=' + encodeURIComponent(actual);
-          return;
-        }
-        if (Auth.esAdmin()) {
-          mostrarToast('Los administradores no pueden comprar.', 'error');
-          return;
-        }
+      var sesion = Auth.sesionActual();
+      if (!sesion) {
+        var actual = (location.pathname.split('/').pop() || '');
+        window.location.href = 'login.html?redirect=' + encodeURIComponent(actual);
+        return;
+      }
+      if (Auth.esAdmin()) {
+        mostrarToast('Los administradores no pueden comprar.', 'error');
+        return;
+      }
 
-        var id = btn.getAttribute('data-id');
-        var producto = Datos.productos.buscarPorId(id);
-        // Si no está en la "base de datos", reconstruyo desde el HTML como respaldo
-        if (!producto) {
-          producto = {
-            id:     id,
-            nombre: btn.getAttribute('data-nombre'),
-            precio: parseInt(btn.getAttribute('data-precio'), 10) || 0,
-            imagen: btn.getAttribute('data-imagen')
-          };
-        }
-        Datos.carrito.agregar(sesion.id, producto, 1);
-        mostrarToast('✓ ' + producto.nombre + ' añadido al carrito', 'exito');
+      var id = btn.getAttribute('data-id');
+      var producto = Datos.productos.buscarPorId(id);
+      // Si no está en la "base de datos", reconstruyo desde el HTML como respaldo
+      if (!producto) {
+        producto = {
+          id:     id,
+          nombre: btn.getAttribute('data-nombre'),
+          precio: parseInt(btn.getAttribute('data-precio'), 10) || 0,
+          imagen: btn.getAttribute('data-imagen')
+        };
+      }
+      Datos.carrito.agregar(sesion.id, producto, 1);
+      mostrarToast('✓ ' + producto.nombre + ' añadido al carrito', 'exito');
 
-        // Actualizar el badge del carrito en la navbar sin recargar
-        renderizarNavbar();
-      });
+      // Actualizar el badge del carrito en la navbar sin recargar
+      renderizarNavbar();
     });
   }
 
