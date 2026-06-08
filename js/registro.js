@@ -1,23 +1,33 @@
 /* ============================================================
    Mesa Lúdica - Validaciones del formulario de registro
-   DSY2202 - Experiencia 1, Semana 2
+   DSY2202 - Experiencia 1, Semana 3
 
    Reglas (según instrucciones específicas):
    - Todos los campos son obligatorios excepto "dirección de despacho".
    - Correo electrónico con formato válido.
    - Contraseñas iguales.
-   - Contraseña entre 6 y 18 caracteres, con al menos un número y una mayúscula.
+   - Contraseña con 4 validaciones de seguridad:
+       1) Longitud entre 6 y 18 caracteres
+       2) Al menos una letra mayúscula
+       3) Al menos un número
+       4) Al menos un carácter especial (!@#$%^&*...)
    - Edad mínima de 13 años.
    - Botones: Enviar y Limpiar.
    ============================================================ */
 (function () {
   'use strict';
 
-  const form = document.getElementById('form-registro');
-  if (!form) return; // este script solo aplica en la página de registro
+  var form = document.getElementById('form-registro');
+  if (!form) return;
+
+  // ---- Si ya hay sesión activa, redirige al inicio ----
+  if (window.Auth && Auth.sesionActual()) {
+    window.location.href = 'index.html';
+    return;
+  }
 
   // ---- Referencias a los campos ----
-  const campos = {
+  var campos = {
     nombre:     document.getElementById('nombre'),
     usuario:    document.getElementById('usuario'),
     email:      document.getElementById('email'),
@@ -27,19 +37,19 @@
     direccion:  document.getElementById('direccion')
   };
 
-  const alerta       = document.getElementById('alerta-resultado');
-  const btnTogglePwd = document.getElementById('toggle-password');
+  var alerta       = document.getElementById('alerta-resultado');
+  var btnTogglePwd = document.getElementById('toggle-password');
 
   // ---- Expresiones regulares ----
-  const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  // Al menos una mayúscula, al menos un número, longitud 6 a 18.
-  const REGEX_PASS  = /^(?=.*[A-Z])(?=.*\d).{6,18}$/;
+  var REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Contraseña: longitud 6-18, al menos una mayúscula, un número y un carácter especial.
+  var REGEX_PASS  = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]).{6,18}$/;
 
-  // ---- 1. Mostrar / ocultar contraseña (manipulación dinámica de atributo HTML) ----
+  // ---- 1. Mostrar / ocultar contraseña (manipulación dinámica del atributo type) ----
   if (btnTogglePwd) {
     btnTogglePwd.addEventListener('click', function () {
-      const tipoActual = campos.password.getAttribute('type');
-      const nuevoTipo  = tipoActual === 'password' ? 'text' : 'password';
+      var tipoActual = campos.password.getAttribute('type');
+      var nuevoTipo  = tipoActual === 'password' ? 'text' : 'password';
       campos.password.setAttribute('type', nuevoTipo);
       btnTogglePwd.textContent = nuevoTipo === 'password' ? 'Mostrar' : 'Ocultar';
     });
@@ -48,11 +58,11 @@
   // ---- 2. Helpers ----
   function calcularEdad(fechaTexto) {
     if (!fechaTexto) return -1;
-    const hoy = new Date();
-    const nac = new Date(fechaTexto);
+    var hoy = new Date();
+    var nac = new Date(fechaTexto);
     if (isNaN(nac.getTime())) return -1;
-    let edad = hoy.getFullYear() - nac.getFullYear();
-    const diffMes = hoy.getMonth() - nac.getMonth();
+    var edad = hoy.getFullYear() - nac.getFullYear();
+    var diffMes = hoy.getMonth() - nac.getMonth();
     if (diffMes < 0 || (diffMes === 0 && hoy.getDate() < nac.getDate())) {
       edad--;
     }
@@ -64,8 +74,7 @@
     input.classList.remove('is-valid', 'is-invalid');
     input.classList.add(valido ? 'is-valid' : 'is-invalid');
     if (!valido && mensaje) {
-      // el .invalid-feedback puede estar como hermano directo o dentro del input-group
-      let fb = input.parentElement.querySelector('.invalid-feedback');
+      var fb = input.parentElement.querySelector('.invalid-feedback');
       if (!fb && input.parentElement.parentElement) {
         fb = input.parentElement.parentElement.querySelector('.invalid-feedback');
       }
@@ -80,46 +89,47 @@
 
   // ---- 3. Validaciones campo a campo ----
   function validarNombre() {
-    const v = campos.nombre.value.trim();
+    var v = campos.nombre.value.trim();
     if (!v) { marcar(campos.nombre, false, 'Ingresa tu nombre completo.'); return false; }
     marcar(campos.nombre, true); return true;
   }
 
   function validarUsuario() {
-    const v = campos.usuario.value.trim();
+    var v = campos.usuario.value.trim();
     if (!v) { marcar(campos.usuario, false, 'Ingresa un nombre de usuario.'); return false; }
+    if (v.length < 3) { marcar(campos.usuario, false, 'Mínimo 3 caracteres.'); return false; }
     marcar(campos.usuario, true); return true;
   }
 
   function validarEmail() {
-    const v = campos.email.value.trim();
+    var v = campos.email.value.trim();
     if (!v) { marcar(campos.email, false, 'Ingresa tu correo electrónico.'); return false; }
     if (!REGEX_EMAIL.test(v)) { marcar(campos.email, false, 'Ingresa un correo válido (ej: nombre@dominio.cl).'); return false; }
     marcar(campos.email, true); return true;
   }
 
   function validarPassword() {
-    const v = campos.password.value;
+    var v = campos.password.value;
     if (!v) { marcar(campos.password, false, 'Ingresa una contraseña.'); return false; }
     if (!REGEX_PASS.test(v)) {
-      marcar(campos.password, false, 'Entre 6 y 18 caracteres, con al menos una mayúscula y un número.');
+      marcar(campos.password, false, 'Entre 6 y 18 caracteres, con mayúscula, número y un símbolo especial.');
       return false;
     }
     marcar(campos.password, true); return true;
   }
 
   function validarPassword2() {
-    const v  = campos.password2.value;
-    const v1 = campos.password.value;
+    var v  = campos.password2.value;
+    var v1 = campos.password.value;
     if (!v) { marcar(campos.password2, false, 'Repite la contraseña.'); return false; }
     if (v !== v1) { marcar(campos.password2, false, 'Las contraseñas no coinciden.'); return false; }
     marcar(campos.password2, true); return true;
   }
 
   function validarNacimiento() {
-    const v = campos.nacimiento.value;
+    var v = campos.nacimiento.value;
     if (!v) { marcar(campos.nacimiento, false, 'Ingresa tu fecha de nacimiento.'); return false; }
-    const edad = calcularEdad(v);
+    var edad = calcularEdad(v);
     if (edad < 13) {
       marcar(campos.nacimiento, false, 'Debes tener al menos 13 años para registrarte.');
       return false;
@@ -128,24 +138,22 @@
   }
 
   function validarTodos() {
-    // Se ejecutan todas para que el usuario vea todos los errores juntos.
-    const r1 = validarNombre();
-    const r2 = validarUsuario();
-    const r3 = validarEmail();
-    const r4 = validarPassword();
-    const r5 = validarPassword2();
-    const r6 = validarNacimiento();
+    var r1 = validarNombre();
+    var r2 = validarUsuario();
+    var r3 = validarEmail();
+    var r4 = validarPassword();
+    var r5 = validarPassword2();
+    var r6 = validarNacimiento();
     return r1 && r2 && r3 && r4 && r5 && r6;
   }
 
-  // ---- 4. Validación en vivo: al salir de cada campo ----
+  // ---- 4. Validación en vivo (blur) ----
   campos.nombre    .addEventListener('blur',  validarNombre);
   campos.usuario   .addEventListener('blur',  validarUsuario);
   campos.email     .addEventListener('blur',  validarEmail);
   campos.password  .addEventListener('blur',  validarPassword);
   campos.password2 .addEventListener('blur',  validarPassword2);
   campos.password2 .addEventListener('input', function () {
-    // si ya estaba marcado como inválido, revalida en vivo
     if (campos.password2.classList.contains('is-invalid')) validarPassword2();
   });
   campos.nacimiento.addEventListener('blur',  validarNacimiento);
@@ -154,39 +162,61 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    if (validarTodos()) {
-      // Construir el mensaje personalizado dentro del modal
-      const mensajeModal = document.getElementById('modal-mensaje');
-      if (mensajeModal) {
-        mensajeModal.textContent =
-          '¡Bienvenido/a, ' + campos.nombre.value.trim() + '! ' +
-          'Tu cuenta fue creada y te enviaremos la confirmación a ' +
-          campos.email.value.trim() + '.';
-      }
-
-      // Mostrar el modal de Bootstrap
-      const modalEl = document.getElementById('modalExito');
-      if (modalEl && window.bootstrap) {
-        const modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
-        modal.show();
-      }
-
-      // Limpiar el formulario después de mostrar el modal
-      form.reset();
-      Object.keys(campos).forEach(function (k) { limpiarMarcado(campos[k]); });
-      if (campos.password) campos.password.setAttribute('type', 'password');
-      if (btnTogglePwd)    btnTogglePwd.textContent = 'Mostrar';
-      alerta.className   = 'mt-4';
-      alerta.textContent = '';
-    } else {
+    if (!validarTodos()) {
       alerta.className   = 'mt-4 alert alert-danger';
       alerta.textContent = 'Hay campos con errores. Revisa los recuadros marcados en rojo.';
-      const primerError = form.querySelector('.is-invalid');
+      var primerError = form.querySelector('.is-invalid');
       if (primerError) primerError.focus();
+      return;
     }
+
+    // Conexión con Auth: registra al usuario en localStorage
+    if (!window.Auth) {
+      alerta.className   = 'mt-4 alert alert-danger';
+      alerta.textContent = 'No se pudo cargar el sistema de autenticación. Recarga la página.';
+      return;
+    }
+
+    var resultado = Auth.registrar({
+      nombre:     campos.nombre.value.trim(),
+      usuario:    campos.usuario.value.trim(),
+      email:      campos.email.value.trim(),
+      password:   campos.password.value,
+      nacimiento: campos.nacimiento.value,
+      direccion:  campos.direccion.value.trim()
+    });
+
+    if (!resultado.ok) {
+      alerta.className   = 'mt-4 alert alert-danger';
+      alerta.textContent = resultado.mensaje;
+      return;
+    }
+
+    // Mensaje personalizado en el modal de éxito
+    var mensajeModal = document.getElementById('modal-mensaje');
+    if (mensajeModal) {
+      mensajeModal.textContent =
+        '¡Bienvenido/a, ' + resultado.usuario.nombre + '! ' +
+        'Tu cuenta fue creada con éxito. Ya puedes iniciar sesión con el usuario "' +
+        resultado.usuario.usuario + '".';
+    }
+
+    var modalEl = document.getElementById('modalExito');
+    if (modalEl && window.bootstrap) {
+      var modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+      modal.show();
+    }
+
+    // Limpiar formulario tras mostrar el modal
+    form.reset();
+    Object.keys(campos).forEach(function (k) { limpiarMarcado(campos[k]); });
+    if (campos.password) campos.password.setAttribute('type', 'password');
+    if (btnTogglePwd)    btnTogglePwd.textContent = 'Mostrar';
+    alerta.className   = 'mt-4';
+    alerta.textContent = '';
   });
 
-  // ---- 6. Botón limpiar: borra marcadores y el cuadro de alerta ----
+  // ---- 6. Botón limpiar: borra marcadores y la alerta ----
   form.addEventListener('reset', function () {
     Object.keys(campos).forEach(function (k) { limpiarMarcado(campos[k]); });
     alerta.className   = 'mt-4';

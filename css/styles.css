@@ -1,6 +1,6 @@
 /* ============================================================
    Mesa Lúdica - Hoja de estilos principal
-   DSY2202 - Desarrollo Full Stack II - Experiencia 1, Semana 2
+   DSY2202 - Desarrollo Full Stack II - Experiencia 1, Semana 3
    ============================================================ */
 
 /* ----- 1. VARIABLES CSS (variables personalizadas) ----- */
@@ -32,14 +32,14 @@
   --transicion: 0.3s ease;
   --ancho-max: 1100px;
 
-  /* Personalización de Bootstrap a nuestra paleta */
+  /* Override de variables de Bootstrap para que use nuestra paleta */
   --bs-primary: var(--color-primario);
   --bs-primary-rgb: 30, 58, 138;
 }
 
 /* ----- 2. RESET BÁSICO ----- */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: smooth; /* desplazamiento suave */
 }
 
 body {
@@ -60,26 +60,32 @@ a {
 }
 
 /* ----- 3. ANIMACIONES (@keyframes) ----- */
+
+/* (1) Aparición suave de elementos */
 @keyframes aparecer {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* (2) Deslizar el encabezado desde arriba */
 @keyframes bajarHeader {
   from { transform: translateY(-100%); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
 }
 
+/* (3) Latido para resaltar la etiqueta de descuento */
 @keyframes latir {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.12); }
 }
 
+/* (4) Flotación para los iconos/imágenes destacadas */
 @keyframes flotar {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(-10px); }
 }
 
+/* (5) Brillo que recorre el hero */
 @keyframes brillo {
   0%   { background-position: -200% center; }
   100% { background-position: 200% center; }
@@ -183,6 +189,42 @@ a {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255,255,255,0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
+/* dropdowns de la navbar (escritorio) */
+.cabecera .dropdown-menu {
+  border: none;
+  border-radius: 12px;
+  box-shadow: var(--sombra-fuerte);
+  margin-top: 6px;
+  padding: 6px;
+}
+
+.cabecera .dropdown-item {
+  border-radius: 8px;
+  font-weight: 600;
+  color: var(--color-texto);
+  padding: 8px 14px;
+  transition: background var(--transicion);
+}
+
+.cabecera .dropdown-item:hover,
+.cabecera .dropdown-item:focus {
+  background: var(--color-fondo);
+  color: var(--color-primario);
+}
+
+.cabecera .dropdown-item.active {
+  background: var(--color-primario);
+  color: #fff;
+}
+
+/* badge del carrito */
+.cabecera .nav-link .badge {
+  font-size: 0.75rem;
+  padding: 0.25em 0.55em;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
 /* ----- 6. HERO (portada de inicio) ----- */
 .hero {
   text-align: center;
@@ -231,7 +273,21 @@ a {
   background: #4b5563;
 }
 
-/* ----- 7. TARJETAS DE CATEGORÍA (index) ----- */
+/* botón "agregar al carrito" dentro de las fichas */
+.boton-agregar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  background: var(--color-exito);
+}
+.boton-agregar:hover {
+  background: #15803d;
+}
+
+/* ----- 7. TARJETAS DE CATEGORÍA (página principal) ----- */
+/* Bootstrap maneja el grid con row/col; estos estilos son sólo visuales. */
 .tarjeta-categoria {
   background: var(--color-superficie);
   border-radius: var(--radio);
@@ -285,6 +341,7 @@ a {
 }
 
 .banner-categoria::after {
+  /* pseudo-elemento que oscurece la imagen para legibilidad */
   content: "";
   position: absolute;
   inset: 0;
@@ -389,7 +446,7 @@ a {
   font-style: italic;
 }
 
-/* ----- 10. PÁGINA DE REGISTRO ----- */
+/* ----- 10. FORMULARIOS (registro, login, recuperar, perfil) ----- */
 .banner-registro {
   position: relative;
   color: #fff;
@@ -426,12 +483,13 @@ a {
   color: var(--color-texto);
 }
 
-.formulario-card .form-control:focus {
+.formulario-card .form-control:focus,
+.formulario-card .form-select:focus {
   border-color: var(--color-secundario);
   box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.18);
 }
 
-/* ----- 10b. MODAL DE ÉXITO DEL REGISTRO ----- */
+/* Modales de éxito (registro, perfil, recuperación, pago) */
 .modal-header-exito {
   background: linear-gradient(135deg, var(--color-exito), #34d399);
   color: #fff;
@@ -442,20 +500,94 @@ a {
   font-weight: 700;
 }
 
-#modalExito .modal-content {
+.modal-content {
   border-radius: var(--radio);
   overflow: hidden;
   border: none;
   box-shadow: var(--sombra-fuerte);
 }
 
-#modalExito .modal-footer {
+.modal-footer {
   border-top: 1px solid #e5e7eb;
   gap: 8px;
   flex-wrap: wrap;
 }
 
-/* ----- 11. PIE DE PÁGINA ----- */
+/* ----- 11. CARRITO Y TABLAS DE ADMINISTRACIÓN ----- */
+.tabla-carrito th,
+.tabla-admin th {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-weight: 700;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.tabla-carrito td,
+.tabla-admin td {
+  vertical-align: middle;
+}
+
+.img-carrito {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: var(--sombra);
+}
+
+.img-mini-compra,
+.img-mini-admin {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.input-cantidad {
+  max-width: 60px;
+}
+
+/* pills de navegación en el panel admin */
+.nav-pills .nav-link {
+  color: var(--color-primario);
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 8px 22px;
+}
+
+.nav-pills .nav-link.active {
+  background: var(--color-primario);
+  color: #fff;
+}
+
+/* ----- 12. TOAST FLOTANTE (notificaciones) ----- */
+.toast-flotante {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 2000;
+  background: var(--color-exito);
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 12px;
+  box-shadow: var(--sombra-fuerte);
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  max-width: 90vw;
+}
+
+.toast-flotante.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast-flotante.toast-error {
+  background: var(--color-peligro);
+}
+
+/* ----- 13. PIE DE PÁGINA ----- */
 .pie-pagina {
   background: var(--color-texto);
   color: #e5e7eb;
@@ -469,11 +601,11 @@ a {
   font-weight: 600;
 }
 
-/* ----- 12. AJUSTES RESPONSIVOS ADICIONALES ----- */
-/* Bootstrap maneja la cuadrícula; estos retoques afinan tipografías y paddings. */
+/* ----- 14. DISEÑO RESPONSIVO (media queries) ----- */
+/* Bootstrap maneja la cuadrícula; estos retoques afinan tipografías, navbar mobile y formularios. */
 
+/* Tablets y mobile: navbar colapsada */
 @media screen and (max-width: 991.98px) {
-  /* navbar colapsada (móvil/tablet) */
   .cabecera .navbar-collapse {
     width: 100%;
   }
@@ -500,8 +632,26 @@ a {
   .cabecera .nav-item:has(> .nav-cta) {
     margin-top: 6px;
   }
+  /* dropdowns dentro del menú colapsado: integrados como sub-menú */
+  .cabecera .dropdown-menu {
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: none;
+    padding: 4px;
+    margin: 4px 0 8px;
+    border-radius: 12px;
+  }
+  .cabecera .dropdown-item {
+    color: #fff;
+    text-align: center;
+  }
+  .cabecera .dropdown-item:hover,
+  .cabecera .dropdown-item:focus {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+  }
 }
 
+/* Tablets */
 @media screen and (max-width: 768px) {
   .hero h1 { font-size: 2rem; }
   .titulo-seccion { font-size: 1.6rem; }
@@ -510,6 +660,7 @@ a {
   .formulario-card { padding: 22px; }
 }
 
+/* Teléfonos */
 @media screen and (max-width: 480px) {
   .hero { padding: 50px 16px; }
   .hero h1 { font-size: 1.7rem; }
